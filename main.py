@@ -13,143 +13,166 @@ def calculate_parity(x):
         return 1
 
 
-# to check the parity values of all the elements of a row to the right of some index
-def store_parity_row_right(array, index):
-    if index < len(array) - 2:
-        # print("index=" + str(index))
-        # print(len(array) - 2)
-        if array[len(array) - 1] == 1:
-            store = 'odd'
+def make_parity_matrix_right(array):
+    rows = len(array)
+    cols = len(array[0])
+    right_matrix = [['?'] * cols for i in range(rows)]
+
+    for i in range(0, rows):
+        second_last_col = cols - 3
+        parity_of_last_element = calculate_parity(array[i][len(array[0]) - 1])
+        parity_of_second_last_element = calculate_parity(array[i][len(array[0]) - 2])
+
+        if parity_of_last_element == parity_of_second_last_element:
+            if parity_of_last_element == 1:
+                right_matrix[i][second_last_col] = 'odd'
+
+            else:
+                right_matrix[i][second_last_col] = 'even'
+
         else:
-            store = 'even'
+            right_matrix[i][second_last_col] = 'mixed'
 
-        for i in range(len(array) - 1, index, -1):
-            # print("i= " + str(i))
-            # print("store= " + store)
-            # print("array= " + str(array[i]))
-            if store == 'odd':
-                if array[i] == 1:
-                    store = 'odd'
-                else:
-                    store = 'mixed'
+    for row in range(0, rows):
+        for col in range(cols - 4, -1, -1):
+            if right_matrix[row][col + 1] == 'odd':
+                if array[row][col + 1] == 1:
+                    right_matrix[row][col] = 'odd'
+                if array[row][col + 1] == 0:
+                    right_matrix[row][col] = 'mixed'
 
-            elif store == 'even':
-                if array[i] == 1:
-                    store = 'mixed'
-                else:
-                    store = 'even'
+            elif right_matrix[row][col + 1] == 'even':
+                if array[row][col + 1] == 1:
+                    right_matrix[row][col] = 'mixed'
+                if array[row][col + 1] == 0:
+                    right_matrix[row][col] = 'even'
 
-            elif store == 'mixed':
-                store = 'mixed'
+            else:
+                right_matrix[row][col] = 'mixed'
 
-
-    else:
-        store = 'nope'
-
-    # print(store)
-    return store
+    # print_matrix(right_matrix)
+    return right_matrix
 
 
-# to check the parity values of all the elements of a row to the left of some index
-def store_parity_row_left(array, index):
-    if index > 1:
-        # print(len(array))
-        if array[0] == 1:
-            store = 'odd'
+def make_parity_matrix_left(array):
+    rows = len(array)
+    cols = len(array[0])
+    left_matrix = [['?'] * cols for i in range(rows)]
+
+    for i in range(0, rows):
+        parity_of_first_element = calculate_parity(array[i][0])
+        parity_of_second_element = calculate_parity(array[i][1])
+
+        if parity_of_first_element == parity_of_second_element:
+            if parity_of_first_element == 1:
+                left_matrix[i][2] = 'odd'
+
+            else:
+                left_matrix[i][2] = 'even'
+
         else:
-            store = 'even'
+            left_matrix[i][2] = 'mixed'
 
-        for i in range(0, index):
-            # print("i= " + str(i))
-            # print("store= " + store)
-            # print("array= " + str(array[i]))
-            if store == 'odd':
-                if array[i] == 1:
-                    store = 'odd'
-                else:
-                    store = 'mixed'
+    for row in range(0, rows):
+        for col in range(3, cols):
+            if left_matrix[row][col - 1] == 'odd':
+                if array[row][col - 1] == 1:
+                    left_matrix[row][col] = 'odd'
+                if array[row][col - 1] == 0:
+                    left_matrix[row][col] = 'mixed'
 
-            elif store == 'even':
-                if array[i] == 1:
-                    store = 'mixed'
-                else:
-                    store = 'even'
+            elif left_matrix[row][col - 1] == 'even':
+                if array[row][col - 1] == 1:
+                    left_matrix[row][col] = 'mixed'
+                if array[row][col - 1] == 0:
+                    left_matrix[row][col] = 'even'
 
-            elif store == 'mixed':
-                store = 'mixed'
+            else:
+                left_matrix[row][col] = 'mixed'
 
-    else:
-        store = 'nope'
-
-    return store
+    # print_matrix(left_matrix)
+    return left_matrix
 
 
-# to check the parity values of all the elements of a column above some index
-def store_parity_col_above(array, index):
-    if index > 1:
-        # print(len(array))
-        if array[0] == 1:
-            store = 'odd'
+def make_parity_matrix_above(array):
+    rows = len(array)
+    cols = len(array[0])
+    above_matrix = [['?'] * cols for i in range(rows)]
+
+    for i in range(0, rows):
+        parity_of_first_element = calculate_parity(array[i][0])
+        parity_of_second_element = calculate_parity(array[i][1])
+
+        if parity_of_first_element == parity_of_second_element:
+            if parity_of_first_element == 1:
+                above_matrix[i][2] = 'odd'
+
+            else:
+                above_matrix[i][2] = 'even'
+
         else:
-            store = 'even'
+            above_matrix[i][2] = 'mixed'
 
-        for i in range(0, index):
-            # print("i= " + str(i))
-            # print("store= " + store)
-            # print("array= " + str(array[i]))
-            if store == 'odd':
-                if array[i] == 1:
-                    store = 'odd'
-                else:
-                    store = 'mixed'
+    for row in range(0, rows):
+        for col in range(3, cols):
+            if above_matrix[row][col - 1] == 'odd':
+                if array[row][col - 1] == 1:
+                    above_matrix[row][col] = 'odd'
+                if array[row][col - 1] == 0:
+                    above_matrix[row][col] = 'mixed'
 
-            elif store == 'even':
-                if array[i] == 1:
-                    store = 'mixed'
-                else:
-                    store = 'even'
+            elif above_matrix[row][col - 1] == 'even':
+                if array[row][col - 1] == 1:
+                    above_matrix[row][col] = 'mixed'
+                if array[row][col - 1] == 0:
+                    above_matrix[row][col] = 'even'
 
-            elif store == 'mixed':
-                store = 'mixed'
+            else:
+                above_matrix[row][col] = 'mixed'
 
-    else:
-        store = 'nope'
-
-    return store
+    # print_matrix(above_matrix)
+    return above_matrix
 
 
-# to check the parity values of all the elements of a column below some index
-def store_parity_col_below(array, index):
-    if index < len(array) - 2:
-        # print(len(array))
-        if array[len(array) - 1] == 1:
-            store = 'odd'
+def make_parity_matrix_below(array):
+    rows = len(array)
+    cols = len(array[0])
+    below_matrix = [['?'] * cols for i in range(rows)]
+
+    for i in range(0, rows):
+        second_last_col = cols - 3
+        parity_of_last_element = calculate_parity(array[i][len(array[0]) - 1])
+        parity_of_second_last_element = calculate_parity(array[i][len(array[0]) - 2])
+
+        if parity_of_last_element == parity_of_second_last_element:
+            if parity_of_last_element == 1:
+                below_matrix[i][second_last_col] = 'odd'
+
+            else:
+                below_matrix[i][second_last_col] = 'even'
+
         else:
-            store = 'even'
+            below_matrix[i][second_last_col] = 'mixed'
 
-        for i in range(len(array) - 1, index, -1):
-            # print("i= " + str(i))
-            # print("store= " + store)
-            # print("array= " + str(array[i]))
-            if store == 'odd':
-                if array[i] == 1:
-                    store = 'odd'
-                else:
-                    store = 'mixed'
+    for row in range(0, rows):
+        for col in range(cols - 4, -1, -1):
+            if below_matrix[row][col + 1] == 'odd':
+                if array[row][col + 1] == 1:
+                    below_matrix[row][col] = 'odd'
+                if array[row][col + 1] == 0:
+                    below_matrix[row][col] = 'mixed'
 
-            elif store == 'even':
-                if array[i] == 1:
-                    store = 'mixed'
-                else:
-                    store = 'even'
+            elif below_matrix[row][col + 1] == 'even':
+                if array[row][col + 1] == 1:
+                    below_matrix[row][col] = 'mixed'
+                if array[row][col + 1] == 0:
+                    below_matrix[row][col] = 'even'
 
-            elif store == 'mixed':
-                store = 'mixed'
+            else:
+                below_matrix[row][col] = 'mixed'
 
-    else:
-        store = 'nope'
-
-    return store
+    # print_matrix(below_matrix)
+    return below_matrix
 
 
 # to print a matrix in readable format
@@ -162,91 +185,71 @@ def print_matrix(array):
 
 # to create the parity sensitive matrix
 def create_parity_matrix(M, N, input1):
-    # no of rows
-    # M = input1[0][0]
-    # # no of columns
-    # N = input1[0][1]
-
-    # M, N = list(map(int, input().split()))
-
-    # input1 = [list(input().split()) for i in range(M)]
-
     # the final matrix that will contain the parity sensitivity of elements
     result_matrix = [['.'] * N for i in range(M)]
     # a matrix that contains the parity value of each element
     parity_matrix = [['.'] * N for i in range(M)]
-    # print(parity_matrix)
+    # print_matrix(parity_matrix)
 
     # creating the parity matrix
     for i in range(0, M):
         for j in range(0, N):
             parity_matrix[i][j] = calculate_parity(input1[i][j])
+
     # print_matrix(parity_matrix)
 
-    # transposing the parity matrix, makes
-    # it easy to check parity of elements above and below an index
+    # transposing the parity matrix, makes it easy to check parity of elements above and below an index
     tr_parity_matrix = list(zip(*parity_matrix))
 
-    # print(tr_parity_matrix)
-    # print(tr_parity_matrix[0])
-    # print(store_parity_col_above(tr_parity_matrix[3], 4))
+    # print_matrix(tr_parity_matrix)
 
-    # finally creating the parity sensitivity matrix
+    right = make_parity_matrix_right(parity_matrix)
+    left = make_parity_matrix_left(parity_matrix)
+    below = make_parity_matrix_below(tr_parity_matrix)
+    above = make_parity_matrix_above(tr_parity_matrix)
+
+    # finally, creating the parity sensitivity matrix
     for row in range(0, M):
         for col in range(0, N):
             while 1:
-                # check parity to its right
-                # print(store_parity_row_right(parity_matrix[row], col))
-                if store_parity_row_right(parity_matrix[row], col) == 'even':
-                    # print(str(row) + ",  "+ str(col))
+                if right[row][col] == 'even':
                     result_matrix[row][col] = 'x'
-                    # print("breaking-store_parity_row_right")
+                    # print("breaking out of right")
                     break
-                # print(store_parity_row_right(parity_matrix[row], col))
-                elif store_parity_row_right(parity_matrix[row], col) == 'odd':
-                    # print(str(row) + ",  " + str(col))
+                elif right[row][col] == 'odd':
                     result_matrix[row][col] = 'x'
-                    # print("breaking-store_parity_row_right")
+                    # print("breaking out of right")
                     break
 
-                # check parity to its left
-                elif store_parity_row_left(parity_matrix[row], col) == 'even':
-                    # print(str(row) + ",  " + str(col))
+                elif left[row][col] == 'even':
                     result_matrix[row][col] = 'x'
-                    # print("breaking-store_parity_row_left")
+                    # print("breaking out of left")
                     break
-                elif store_parity_row_left(parity_matrix[row], col) == 'odd':
-                    # print(str(row) + ",  " + str(col))
+                elif left[row][col] == 'odd':
                     result_matrix[row][col] = 'x'
-                    # print("breaking4-store_parity_row_left")
+                    # print("breaking out of left")
                     break
 
-                # check parity below it
-                elif store_parity_col_below(tr_parity_matrix[col], row) == 'even':
-                    # print(str(row) + ",  " + str(col))
+                elif above[col][row] == 'even':
                     result_matrix[row][col] = 'x'
-                    # print("breaking-store_parity_col_below")
+                    # print("breaking out of above")
                     break
-                elif store_parity_col_below(tr_parity_matrix[col], row) == 'odd':
-                    # print(str(row) + ",  " + str(col))
+                elif above[col][row] == 'odd':
                     result_matrix[row][col] = 'x'
-                    # print("breaking-store_parity_col_below")
+                    # print("breaking out of above")
                     break
 
-                # check parity above it
-                elif store_parity_col_above(tr_parity_matrix[col], row) == 'even':
-                    # print(str(row) + ",  " + str(col))
+                elif below[col][row] == 'even':
                     result_matrix[row][col] = 'x'
-                    # print("breaking-store_parity_col_above")
+                    # print("breaking out of below")
                     break
-                elif store_parity_col_above(tr_parity_matrix[col], row) == 'odd':
-                    # print(str(row) + ",  " + str(col))
+                elif below[col][row] == 'odd':
                     result_matrix[row][col] = 'x'
-                    # print("breaking-store_parity_col_above")
+                    # print("breaking out of below")
                     break
 
                 else:
-                    # print("breaking-nope")
+                    # print("breaking out of nope")
                     break
 
     # removing the quotes from the characters
@@ -263,10 +266,10 @@ def create_parity_matrix(M, N, input1):
             output += result_matrix[i][j]
             if j < len(result_matrix[0]) - 1:
                 output += ' '
-        if  i < len(result_matrix) - 1:
+        if i < len(result_matrix) - 1:
             output += '\n'
     print(output)
-    # print(len(output))
+
 
 
 if __name__ == '__main__':
@@ -280,6 +283,11 @@ if __name__ == '__main__':
     #        [8, 9, 2, 8, 5, 5, 3, 7],
     #        [4, 4, 6, 1, 9, 7, 9, 7],
     #        [3, 8, 9, 4, 6, 4, 4, 6]]
+    #
+    # no_of_rows = inp[0][0]
+    # no_of_columns = inp[0][1]
+
+    # input_matrix = inp[1:no_of_rows + 1][0:no_of_columns]
 
     user_input = input()
 
