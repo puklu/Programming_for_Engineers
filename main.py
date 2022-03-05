@@ -91,7 +91,7 @@ def pyramid(input_array):
 
     for row in range(top_row, last_row + 1):
         for col in range(start, end):
-            if row <= no_of_rows - 1 and col <= no_of_columns - 1:
+            if row <= no_of_rows - 1 and col <= no_of_columns - 1 and row >= 0:
                 canvas[row][col] = character
         start -= 1
         end += 1
