@@ -46,8 +46,9 @@ def extract_DM_date(line):
 def calculate_duration_between_two_dates(dates):
     days_in_each_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     # print(dates)
+
     if len(dates) == 1:
-        return 1
+        return 1, dates
     else:
         months = {}
         for i in range(len(dates)):
@@ -87,15 +88,20 @@ def calculate_duration_between_two_dates(dates):
 
             duration = days_in_first_month + days_in_last_month + days_in_between
         # print(duration)
-        return duration
+        start_date = first_day+"."+first_month+"."
+        end_date = last_day+"."+last_month+"."
+        return [duration, start_date, end_date]
 
 
 def solution(text_lines):
     print(text_lines)
+    possible_dates_collector = []
     for i in range(len(text_lines)):
         dates_in_line = extract_DM_date(text_lines[i])
-        duration = calculate_duration_between_two_dates(dates_in_line)
-        # print(dates_in_line)
+        if dates_in_line:
+            expedition_dates_with_duration = calculate_duration_between_two_dates(dates_in_line)
+            possible_dates_collector.append(expedition_dates_with_duration)
+    print(possible_dates_collector)
 
 
 if __name__ == '__main__':
