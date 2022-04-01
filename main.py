@@ -46,9 +46,12 @@ def extract_DM_date(line):
 def calculate_duration_between_two_dates(n, dates):
     days_in_each_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     # print(dates)
+    answer = {}
 
     if len(dates) == 1:
-        return [n+1, 1, dates[0]]
+        answer[int(dates[0].split(".")[1])] = [n+1, 1, dates[0], dates[0]]
+        return answer
+        # return [n+1, 1, dates[0]]
     else:
         months = {}
         for i in range(len(dates)):
@@ -91,18 +94,63 @@ def calculate_duration_between_two_dates(n, dates):
         start_date = first_day+"."+first_month+"."
         end_date = last_day+"."+last_month+"."
 
-        return [n+1, duration, start_date, end_date]
+        answer[int(start_date.split(".")[1])] = [n + 1, duration, start_date, end_date]
+        return answer
+        # return [n+1, duration, start_date, end_date]
 
 
 def solution(text_lines):
     print(text_lines)
-    possible_dates_collector = []
+    possible_dates_collector = {}
+
     for i in range(len(text_lines)):
         dates_in_line = extract_DM_date(text_lines[i])
         if dates_in_line:
             expedition_dates_with_duration = calculate_duration_between_two_dates(i, dates_in_line)
-            possible_dates_collector.append(expedition_dates_with_duration)
+            split_day = (expedition_dates_with_duration.get(list(expedition_dates_with_duration.keys())[0])[2])[0:2]
+            # print("....")
+            # print((expedition_dates_with_duration.get(list(expedition_dates_with_duration.keys())[0])[2])[0:2])
+            if list(expedition_dates_with_duration.keys())[0] in list(possible_dates_collector.keys()):
+
+                possible_dates_collector[float(str(list(expedition_dates_with_duration.keys())[0])+ "." + split_day)] = [expedition_dates_with_duration.get(list(expedition_dates_with_duration.keys())[0])[0]]
+                possible_dates_collector[float(str(list(expedition_dates_with_duration.keys())[0]) + "."+ split_day)].append(expedition_dates_with_duration.get(list(expedition_dates_with_duration.keys())[0])[1])
+                possible_dates_collector[float(str(list(expedition_dates_with_duration.keys())[0]) + "."+ split_day)].append(expedition_dates_with_duration.get(list(expedition_dates_with_duration.keys())[0])[2])
+                possible_dates_collector[float(str(list(expedition_dates_with_duration.keys())[0]) + "."+ split_day)].append(expedition_dates_with_duration.get(list(expedition_dates_with_duration.keys())[0])[3])
+
+            else:
+                possible_dates_collector[float(str(list(expedition_dates_with_duration.keys())[0]) + "." + split_day)] = expedition_dates_with_duration.get(list(expedition_dates_with_duration.keys())[0])
+                # possible_dates_collector.update(expedition_dates_with_duration)
+
+    print(expedition_dates_with_duration)
     print(possible_dates_collector)
+    sorteddict = sorted(possible_dates_collector)
+    print(sorteddict)
+    print("....")
+
+    ### making pairs ###
+    # sorting for pairing
+    sorted_for_pairing = []
+    # print(sorted_for_pairing)
+    for i in range(len(sorteddict)):
+        sorted_for_pairing.append(possible_dates_collector.get(sorteddict[i]))
+    print(sorted_for_pairing)
+    # print(len(sorted_for_pairing))
+    #pairing
+    pairs = [[] for i in range(len(sorted_for_pairing)-1)]
+    for j in range(len(sorted_for_pairing)-1):
+        print(len(sorted_for_pairing[j]))
+        if len(sorted_for_pairing[j]) == 8:
+            print("test")
+            pairs[j].append(sorted_for_pairing[j][2])
+            pairs[j].append(sorted_for_pairing[j][3])
+            pairs[j].append(sorted_for_pairing[j + 1][5])
+            pairs[j].append(sorted_for_pairing[j + 1][6])
+        else:
+            pairs[j].append(sorted_for_pairing[j][2])
+            pairs[j].append(sorted_for_pairing[j][3])
+            pairs[j].append(sorted_for_pairing[j+1][2])
+            pairs[j].append(sorted_for_pairing[j+1][3])
+    print(pairs)
 
 
 if __name__ == '__main__':
