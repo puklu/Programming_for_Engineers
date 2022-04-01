@@ -132,9 +132,9 @@ def solution(text_lines):
                 # possible_dates_collector.update(expedition_dates_with_duration)
 
     # print(expedition_dates_with_duration)
-    print(possible_dates_collector)
+    # print(possible_dates_collector)
     sorteddict = sorted(possible_dates_collector)
-    print(sorteddict)
+    # print(sorteddict)
     # print("....")
 
     ### making pairs ###
@@ -143,7 +143,7 @@ def solution(text_lines):
     # print(sorted_for_pairing)
     for i in range(len(sorteddict)):
         sorted_for_pairing.append(possible_dates_collector.get(sorteddict[i]))
-    print(sorted_for_pairing)
+    # print(sorted_for_pairing)
     # print(len(sorted_for_pairing))
 
     # convert to dictionary for making it sortable
@@ -156,31 +156,38 @@ def solution(text_lines):
         # print(sorted_for_pairing[j])
         pairs_dict[key] = sorted_for_pairing[j]
 
-    print(pairs_dict)
+    # print(pairs_dict)
 
 
     #pairing
     pairs = [[] for i in range(len(pairs_dict)-1)]
+    # pairs = {}
     for k in range(len(pairs_dict)-1):
         dates = [pairs_dict.get(list(pairs_dict.keys())[k])[3], pairs_dict.get(list(pairs_dict.keys())[k+1])[2]]
-        print("....")
+        # print("....")
+        # print(dates)
         dur = calculate_duration_between_two_dates(0, dates)
         dur = dur.get(list(dur.keys())[0])[1]
-        print(dur)
+        # print(dur)
 
         if dur > 7:
             pairs[k].append(pairs_dict.get(list(pairs_dict.keys())[k]))
-            pairs[k].append(pairs_dict.get(list(pairs_dict.keys())[k]))
             pairs[k].append(pairs_dict.get(list(pairs_dict.keys())[k+1]))
-            pairs[k].append(pairs_dict.get(list(pairs_dict.keys())[k+1]))
-            # key1 = sorted_for_pairing[j][2].split(".")[1]
-            # key2 = sorted_for_pairing[j][2].split(".")[0]
-            # key = key1+"."+key2
-            # print(".....")
-            # print(sorted_for_pairing[j])
-            # pairs_dict[key] = sorted_for_pairing[j]
-            # pairs_dict[key] = sorted_for_pairing[j+1]
-    print(pairs_dict)
+
+    if [] in pairs:
+        pairs.remove([])
+
+    # print(pairs)
+
+    expedition_duration = pairs[0][0][1]+pairs[0][1][1]
+    print(expedition_duration)
+    for l in range(len(pairs)):
+        print(pairs[l][0][0], end=" ")
+        print(pairs[l][0][2], end=" ")
+        print(pairs[l][0][3], end=" ")
+        print(pairs[l][1][0], end=" ")
+        print(pairs[l][1][2], end=" ")
+        print(pairs[l][1][3])
 
 
 if __name__ == '__main__':
