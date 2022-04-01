@@ -55,6 +55,7 @@ def calculate_duration_between_two_dates(n, dates):
     else:
         months = {}
         for i in range(len(dates)):
+            # print(dates[i])
             if dates[i].split(".")[1] in months.keys():
                 months[dates[i].split(".")[1]].append(dates[i].split(".")[0])
             else:
@@ -95,19 +96,26 @@ def calculate_duration_between_two_dates(n, dates):
         end_date = last_day+"."+last_month+"."
 
         answer[int(start_date.split(".")[1])] = [n + 1, duration, start_date, end_date]
+        # print("answer")
+        # print(answer)
         return answer
         # return [n+1, duration, start_date, end_date]
 
 
 def solution(text_lines):
-    print(text_lines)
+    # print(text_lines)
     possible_dates_collector = {}
 
     for i in range(len(text_lines)):
         dates_in_line = extract_DM_date(text_lines[i])
+        # print("::::::::::")
+        # print(dates_in_line)
         if dates_in_line:
             expedition_dates_with_duration = calculate_duration_between_two_dates(i, dates_in_line)
-            split_day = (expedition_dates_with_duration.get(list(expedition_dates_with_duration.keys())[0])[2])[0:2]
+            # split_day = (expedition_dates_with_duration.get(list(expedition_dates_with_duration.keys())[0])[2])[0:2]
+            split_day = (expedition_dates_with_duration.get(list(expedition_dates_with_duration.keys())[0])[2])
+            split_day = split_day.split(".")[0]
+            # print((split_day))
             # print("....")
             # print((expedition_dates_with_duration.get(list(expedition_dates_with_duration.keys())[0])[2])[0:2])
             if list(expedition_dates_with_duration.keys())[0] in list(possible_dates_collector.keys()):
@@ -118,14 +126,16 @@ def solution(text_lines):
                 possible_dates_collector[float(str(list(expedition_dates_with_duration.keys())[0]) + "."+ split_day)].append(expedition_dates_with_duration.get(list(expedition_dates_with_duration.keys())[0])[3])
 
             else:
+                # print("....")
+                # print(type(split_day))
                 possible_dates_collector[float(str(list(expedition_dates_with_duration.keys())[0]) + "." + split_day)] = expedition_dates_with_duration.get(list(expedition_dates_with_duration.keys())[0])
                 # possible_dates_collector.update(expedition_dates_with_duration)
 
-    print(expedition_dates_with_duration)
+    # print(expedition_dates_with_duration)
     print(possible_dates_collector)
     sorteddict = sorted(possible_dates_collector)
     print(sorteddict)
-    print("....")
+    # print("....")
 
     ### making pairs ###
     # sorting for pairing
@@ -135,22 +145,42 @@ def solution(text_lines):
         sorted_for_pairing.append(possible_dates_collector.get(sorteddict[i]))
     print(sorted_for_pairing)
     # print(len(sorted_for_pairing))
+
+    # convert to dictionary for making it sortable
+    pairs_dict = {}
+    for j in range(len(sorted_for_pairing)):
+        key1 = sorted_for_pairing[j][2].split(".")[1]
+        key2 = sorted_for_pairing[j][2].split(".")[0]
+        key = key1 + "." + key2
+        # print(".....")
+        # print(sorted_for_pairing[j])
+        pairs_dict[key] = sorted_for_pairing[j]
+
+    print(pairs_dict)
+
+
     #pairing
-    pairs = [[] for i in range(len(sorted_for_pairing)-1)]
-    for j in range(len(sorted_for_pairing)-1):
-        print(len(sorted_for_pairing[j]))
-        if len(sorted_for_pairing[j]) == 8:
-            print("test")
-            pairs[j].append(sorted_for_pairing[j][2])
-            pairs[j].append(sorted_for_pairing[j][3])
-            pairs[j].append(sorted_for_pairing[j + 1][5])
-            pairs[j].append(sorted_for_pairing[j + 1][6])
-        else:
-            pairs[j].append(sorted_for_pairing[j][2])
-            pairs[j].append(sorted_for_pairing[j][3])
-            pairs[j].append(sorted_for_pairing[j+1][2])
-            pairs[j].append(sorted_for_pairing[j+1][3])
-    print(pairs)
+    pairs = [[] for i in range(len(pairs_dict)-1)]
+    for k in range(len(pairs_dict)-1):
+        dates = [pairs_dict.get(list(pairs_dict.keys())[k])[3], pairs_dict.get(list(pairs_dict.keys())[k+1])[2]]
+        print("....")
+        dur = calculate_duration_between_two_dates(0, dates)
+        dur = dur.get(list(dur.keys())[0])[1]
+        print(dur)
+
+        if dur > 7:
+            pairs[k].append(pairs_dict.get(list(pairs_dict.keys())[k]))
+            pairs[k].append(pairs_dict.get(list(pairs_dict.keys())[k]))
+            pairs[k].append(pairs_dict.get(list(pairs_dict.keys())[k+1]))
+            pairs[k].append(pairs_dict.get(list(pairs_dict.keys())[k+1]))
+            # key1 = sorted_for_pairing[j][2].split(".")[1]
+            # key2 = sorted_for_pairing[j][2].split(".")[0]
+            # key = key1+"."+key2
+            # print(".....")
+            # print(sorted_for_pairing[j])
+            # pairs_dict[key] = sorted_for_pairing[j]
+            # pairs_dict[key] = sorted_for_pairing[j+1]
+    print(pairs_dict)
 
 
 if __name__ == '__main__':
