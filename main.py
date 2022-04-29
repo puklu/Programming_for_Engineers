@@ -1,8 +1,38 @@
+def make_tile(n, block):
+    
+    # finding the width  of the tile
+    widths = []
+    for i in range(len(block)):
+        widths.append(len(block[i]))
+    width = max(widths)
+    
+    tile_no = n+1
+    height = len(block)
 
+    count = max(tile_no,height,width )
+    count_for_minuses = 0
+    while count != 0:
+        count = count//10
+        count_for_minuses +=1
+
+
+    # print(count)
+    print("+" + "-"*(9+count_for_minuses+1)+ "+")
+    print("| "+ "Tile:   " + str(tile_no) + " |")
+    print("| "+ "Width:  " + str(width) + " |")
+    print("| "+ "Height: " + str(height) + " |")
+    print("+"+ "-"*width + "+" + "-"*(10 + count_for_minuses - width - 1) + "+")
+    
+
+    for word in block[::-1]:
+        print("|"+ " "*(width - len(word)) +word+"|")
+
+    print("+"+ "-"*width + "+")
+    print()
 
 def solution(text):
     
-    print(text)
+    # print(text)
 
     blocks = [[] for i in range(len(text))]
     
@@ -27,14 +57,19 @@ def solution(text):
                     break    
             
     blocks = list(filter(None, blocks))
+
     print(blocks)
+
+    for i in range(len(blocks)):
+        make_tile(i,blocks[i])
+    
 
 
 if __name__ == '__main__':
 
     # path
     path = "/home/vivek/Downloads/datapub/"
-    fname = "pub01.in"
+    fname = "pub02.in"
 
     file = open( path + fname, "r" )
 
