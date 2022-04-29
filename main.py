@@ -1,6 +1,4 @@
 
-from operator import le
-
 
 def solution(text):
     
