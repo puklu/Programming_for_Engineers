@@ -1,6 +1,9 @@
 # Author: Vivek Punia
 # HW07-Tiled text file- solution for Programming for Engineers
 
+
+import fileinput
+
 def make_tile(n, block):
     
     # finding the width  of the tile
@@ -79,7 +82,7 @@ def make_tile(n, block):
 
     # printing the last line of the tile
     print("+"+ "-"*width + "+")
-    print()
+    # print()
 
 def solution(text):
     
@@ -123,41 +126,27 @@ def solution(text):
 if __name__ == '__main__':
 
     # path of the text file
-    path = "/home/vivek/Downloads/datapub/"
-    fname = "pub08.in"  # file name
+    # path = "/home/vivek/Documents/FEL/Second Semester/Programming for Engineers/Homeworks/hw07/datapub/"
+    # fname = "pub01.in"  # file name
 
     # opening the file
-    file = open( path + fname, "r" )
+    # file = open( path + fname, "r" )
 
     # array to contain the words of the text
     data = []
 
-    # reading the text from the file
-    while True:
-        line = file.read()
-        if line == None or line.strip(" ") == "":
-            break
-        data.append(line)
+    for line in fileinput.input():
+        data.append(line.rstrip().split())
 
-    # just some intermediate varibales to contain the words    
-    new_text = []
     new_new_text = []
-    new_new_new_text = []
 
-    # removing all the \n from the words
-    for i in range(len(data)):
-        new_text.append(data[i].split("\n"))
-    
-    # removing all the empty white spaces from the words
-    for j in range(len(new_text[0])):
-        new_new_text.append(new_text[0][j].split(" "))
+    for k in range(len(data)):
+        for l in range(len(data[k])):
+            new_new_text.append(data[k][l])
 
-    for k in range(len(new_new_text)):
-        for l in range(len(new_new_text[k])):
-            new_new_new_text.append(new_new_text[k][l])
+    # # removing all the empty elements from the list
 
-    # removing all the empty elements from the list
-    new_new_new_text = list(filter(None, new_new_new_text))
+    new_new_text = list(filter(None, new_new_text))
 
-    # calling the solution function
-    solution(new_new_new_text)
+    # # calling the solution function
+    solution(new_new_text)
